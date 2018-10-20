@@ -1,19 +1,15 @@
 import java.util.Arrays;
 
-/**
- * A class that implements a Queue ADT using a circular array
- * The code is modified from Prof. Galles's code.
- */
 public class ArrayQueue implements Queue {
 
-    static final int defaultsize = 10;
+    static final int DEFAULT_SIZE = 10;
 
-    private Object data[]; // the array that will store the queue
+    private Object data[];
     private int head;
     private int tail;
-    private int size; // the maximum # of elements it can hold
+    private int size;
 
-    ArrayQueue(int maxsize) {
+    public ArrayQueue(int maxsize) {
         data = new Object[maxsize];
         Arrays.fill(data, Integer.valueOf(0));
         head = 0;
@@ -21,11 +17,11 @@ public class ArrayQueue implements Queue {
         size = maxsize;
     }
 
-    ArrayQueue() {
-        data = new Object[defaultsize];
+    public ArrayQueue() {
+        data = new Object[DEFAULT_SIZE];
         head = 0;
         tail = 0;
-        size = defaultsize;
+        size = DEFAULT_SIZE;
     }
 
     protected void growQueue() {
@@ -40,7 +36,7 @@ public class ArrayQueue implements Queue {
                 newdata[i++] = data[j];
             }
             head = 0;
-            tail = data.length-1;
+            tail = data.length - 1;
         } else {
 
             for (; i < size; i++)
@@ -51,9 +47,7 @@ public class ArrayQueue implements Queue {
         size = size * 2;
     }
 
-    /**
-     * Add an element to the end of the queue, if it's not full
-     */
+    @Override
     public void enqueue(Object elem) {
         // Before adding, check if the queue is full
         if ((tail + 1) % size == head) {
@@ -63,33 +57,20 @@ public class ArrayQueue implements Queue {
         tail = (tail + 1) % size;
     }
 
+    @Override
     public Object dequeue() {
-        Object retval;
+        Object ret;
 
         if (head == tail)
             return null;
-        retval = data[head];
+        ret = data[head];
         head = (head + 1) % size;
-        return retval;
+        return ret;
     }
 
+    @Override
     public boolean empty() {
         return head == tail;
-    }
-
-    public String toString() {
-        String result = "[";
-        int tmpHead = head;
-        if (tmpHead != tail) {
-            result = result + data[tmpHead];
-            tmpHead = (tmpHead + 1) % size;
-            while (tmpHead != tail) {
-                result = result + "," + data[tmpHead];
-                tmpHead = (tmpHead + 1) % size;
-            }
-        }
-        result = result + "]";
-        return result;
     }
 
 }
